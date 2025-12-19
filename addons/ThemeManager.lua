@@ -357,14 +357,14 @@ do
     --// GUI \\--
     function ThemeManager:CreateThemeManager(groupbox)
         groupbox
-            :AddLabel("Background color")
-            :AddColorPicker("背景颜色", { Default = self.Library.Scheme.BackgroundColor })
-        groupbox:AddLabel("Main color"):AddColorPicker("主要颜色", { Default = self.Library.Scheme.MainColor })
-        groupbox:AddLabel("Accent color"):AddColorPicker("口音颜色", { Default = self.Library.Scheme.AccentColor })
+            :AddLabel("背景颜色")
+            :AddColorPicker("BackgroundColor", { Default = self.Library.Scheme.BackgroundColor })
+        groupbox:AddLabel("主要颜色"):AddColorPicker("MainColor", { Default = self.Library.Scheme.MainColor })
+        groupbox:AddLabel("口音颜色"):AddColorPicker("AccentColor", { Default = self.Library.Scheme.AccentColor })
         groupbox
-            :AddLabel("Outline color")
-            :AddColorPicker("大纲颜色", { Default = self.Library.Scheme.OutlineColor })
-        groupbox:AddLabel("Font color"):AddColorPicker("字体颜色", { Default = self.Library.Scheme.FontColor })
+            :AddLabel("大纲颜色")
+            :AddColorPicker("OutlineColor", { Default = self.Library.Scheme.OutlineColor })
+        groupbox:AddLabel("字体颜色"):AddColorPicker("FontColor", { Default = self.Library.Scheme.FontColor })
         groupbox:AddDropdown("FontFace", {
             Text = "字体",
             Default = "Code",
@@ -459,7 +459,7 @@ do
             end
         end)
         groupbox:AddButton("重置默认值", function()
-            local success = pcall(delfile, self.Folder .. "/themes/default.txt")
+            local success = pcall(delfile, self.Folder .. "/主题/默认.txt")
             if not success then
                 self.Library:Notify("Failed to reset default: delete file error")
                 return
