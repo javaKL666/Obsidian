@@ -190,7 +190,7 @@ local SaveManager = {} do
     --// Save, Load, Delete, Refresh \\--
     function SaveManager:Save(name)
         if (not name) then
-            return false, "no config file is selected"
+            return false, "没有选择配置文件"
         end
         SaveManager:CheckFolderTree()
 
@@ -221,7 +221,7 @@ local SaveManager = {} do
 
         local success, encoded = pcall(httpService.JSONEncode, httpService, data)
         if not success then
-            return false, "failed to encode data"
+            return false, "无法编码数据"
         end
 
         writefile(fullPath, encoded)
@@ -230,7 +230,7 @@ local SaveManager = {} do
 
     function SaveManager:Load(name)
         if (not name) then
-            return false, "no config file is selected"
+            return false, "没有选择配置文件"
         end
         SaveManager:CheckFolderTree()
 
@@ -239,10 +239,10 @@ local SaveManager = {} do
             file = self.Folder .. "/settings/" .. self.SubFolder .. "/" .. name .. ".json"
         end
 
-        if not isfile(file) then return false, "invalid file" end
+        if not isfile(file) then return false, "文件无效" end
 
         local success, decoded = pcall(httpService.JSONDecode, httpService, readfile(file))
-        if not success then return false, "decode error" end
+        if not success then return false, "解码错误" end
 
         for _, option in pairs(decoded.objects) do
             if not option.type then continue end
@@ -256,7 +256,7 @@ local SaveManager = {} do
 
     function SaveManager:Delete(name)
         if (not name) then
-            return false, "no config file is selected"
+            return false, "没有选择配置文件"
         end
 
         local file = self.Folder .. "/settings/" .. name .. ".json"
@@ -264,10 +264,10 @@ local SaveManager = {} do
             file = self.Folder .. "/settings/" .. self.SubFolder .. "/" .. name .. ".json"
         end
 
-        if not isfile(file) then return false, "invalid file" end
+        if not isfile(file) then return false, "文件无效" end
 
         local success = pcall(delfile, file)
-        if not success then return false, "delete file error" end
+        if not success then return false, "删除文件错误" end
 
         return true
     end
@@ -311,9 +311,9 @@ local SaveManager = {} do
 
         if (not success) then
             if self.Library then
-                self.Library:Notify("Failed to load config list: " .. tostring(data))
+                self.Library:Notify("无法加载配置列表: " .. tostring(data))
             else
-                warn("Failed to load config list: " .. tostring(data))
+                warn("无法加载配置列表: " .. tostring(data))
             end
 
             return {}
@@ -334,14 +334,14 @@ local SaveManager = {} do
         if isfile(autoLoadPath) then
             local successRead, name = pcall(readfile, autoLoadPath)
             if not successRead then
-                return "none"
+                return "没有"
             end
 
             name = tostring(name)
-            return if name == "" then "none" else name
+            return if name == "" then "没有" else name
         end
 
-        return "none"
+        return "没有"
     end
 
     function SaveManager:LoadAutoloadConfig()
@@ -355,15 +355,15 @@ local SaveManager = {} do
         if isfile(autoLoadPath) then
             local successRead, name = pcall(readfile, autoLoadPath)
             if not successRead then
-                return self.Library:Notify("Failed to load autoload config: write file error")
+                return self.Library:Notify("无法自动加载配置：写入文件错误")
             end
 
             local success, err = self:Load(name)
             if not success then
-                return self.Library:Notify("Failed to load autoload config: " .. err)
+                return self.Library:Notify("无法自动加载配置: " .. err)
             end
 
-            self.Library:Notify(string.format("Auto loaded config %q", name))
+            self.Library:Notify(string.format("自动加载配置 %q", name))
         end
     end
 
@@ -390,7 +390,7 @@ local SaveManager = {} do
         end
 
         local success = pcall(delfile, autoLoadPath)
-        if not success then return false, "delete file error" end
+        if not success then return false, "删除文件错误" end
 
         return true, ""
     end

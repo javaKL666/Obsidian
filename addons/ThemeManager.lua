@@ -51,6 +51,10 @@ do
             1,
             { FontColor = "ffffff", MainColor = "191919", AccentColor = "a2a2a2", BackgroundColor = "000000", OutlineColor = "282828" },
         },
+        ["Good"] = {
+            2,
+            { FontColor = "ffffff", MainColor = "191919", AccentColor = "a2a2a2", BackgroundColor = "000000", OutlineColor = "282828" },
+        },
         ["BBot"] = {
             2,
             { FontColor = "ffffff", MainColor = "1e1e1e", AccentColor = "7e48a3", BackgroundColor = "232323", OutlineColor = "141414" },
@@ -296,7 +300,7 @@ do
 
     function ThemeManager:SaveCustomTheme(file)
         if file:gsub(" ", "") == "" then
-            self.Library:Notify("Invalid file name for theme (empty)", 3)
+            self.Library:Notify("主题的文件名无效（空）", 3)
             return
         end
 
@@ -311,17 +315,17 @@ do
 
     function ThemeManager:Delete(name)
         if not name then
-            return false, "no config file is selected"
+            return false, "没有选择配置文件"
         end
 
         local file = self.Folder .. "/themes/" .. name .. ".json"
         if not isfile(file) then
-            return false, "invalid file"
+            return false, "文件无效"
         end
 
         local success = pcall(delfile, file)
         if not success then
-            return false, "delete file error"
+            return false, "删除文件错误"
         end
 
         return true
@@ -454,18 +458,18 @@ do
             then
                 self:SaveDefault(self.Library.Options.ThemeManager_CustomThemeList.Value)
                 self.Library:Notify(
-                    string.format("Set default theme to %q", self.Library.Options.ThemeManager_CustomThemeList.Value)
+                    string.format("将默认主题设置 为 %q", self.Library.Options.ThemeManager_CustomThemeList.Value)
                 )
             end
         end)
         groupbox:AddButton("重置默认值", function()
             local success = pcall(delfile, self.Folder .. "/Theme/Default.txt")
             if not success then
-                self.Library:Notify("Failed to reset default: delete file error")
+                self.Library:Notify("无法重置默认值：删除文件错误")
                 return
             end
 
-            self.Library:Notify("Set default theme to nothing")
+            self.Library:Notify("将默认主题设置为任何内容")
             self.Library.Options.ThemeManager_CustomThemeList:SetValues(self:ReloadCustomThemes())
             self.Library.Options.ThemeManager_CustomThemeList:SetValue(nil)
         end)
