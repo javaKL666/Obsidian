@@ -334,14 +334,14 @@ local SaveManager = {} do
         if isfile(autoLoadPath) then
             local successRead, name = pcall(readfile, autoLoadPath)
             if not successRead then
-                return "没有"
+                return "无"
             end
 
             name = tostring(name)
-            return if name == "" then "没有" else name
+            return if name == "" then "无" else name
         end
 
-        return "没有"
+        return "无"
     end
 
     function SaveManager:LoadAutoloadConfig()
@@ -376,7 +376,7 @@ local SaveManager = {} do
         end
 
         local success = pcall(writefile, autoLoadPath, name)
-        if not success then return false, "write file error" end
+        if not success then return false, "写入文件错误" end
 
         return true, ""
     end
