@@ -5998,7 +5998,7 @@ function Library:CreateWindow(WindowInfo)
             Parent = PlayerInfoFrame,
         })
 
-        local avatarUrl = "rbxassetid://0"
+        local avatarUrl = "rbxassetid://95816097006870"
         pcall(function()
             avatarUrl = game.Players:GetUserThumbnailAsync(
                 game.Players.LocalPlayer.UserId,
