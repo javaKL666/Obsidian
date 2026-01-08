@@ -5998,7 +5998,7 @@ function Library:CreateWindow(WindowInfo)
             Parent = PlayerInfoFrame,
         })
 
-        local avatarUrl = "rbxassetid://95816097006870"
+        local avatarUrl = "rbxassetid://0"
         pcall(function()
             avatarUrl = game.Players:GetUserThumbnailAsync(
                 game.Players.LocalPlayer.UserId,
@@ -6089,7 +6089,7 @@ function Library:CreateWindow(WindowInfo)
                 AvatarImage.ImageTransparency = 0
                 DisplayNameLabel.Visible = true
                 UsernameLabel.Visible = true
-                UserLabel.Visible = false
+                UserLabel.Visible = true
             end
             local marginBottom = 40
             Tabs.CanvasSize = UDim2.new(0, 0, 0, Tabs.UIListLayout.AbsoluteContentSize.Y + marginBottom)
