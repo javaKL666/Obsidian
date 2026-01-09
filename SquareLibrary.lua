@@ -6010,11 +6010,7 @@ function Library:CreateWindow(WindowInfo)
     Library.Scheme.Font = WindowInfo.Font
     Library.ToggleKeybind = WindowInfo.ToggleKeybind
     Library.ShowMobileLockButton = WindowInfo.ShowMobileLockButton
-    if WindowInfo.ShowCustomCursor then
-        Library:CustomCursor(true)
-    else
-        Library:CustomCursor(false)
-    end
+    Library.ShowCustomCursor = WindowInfo.ShowCustomCursor
 
     local IsDefaultSearchbarSize = WindowInfo.SearchbarSize == UDim2.fromScale(1, 1)
     local MainFrame
