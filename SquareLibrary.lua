@@ -7718,13 +7718,13 @@ function Library:CreateWindow(WindowInfo)
         task.spawn(Library.Toggle)
     end
     if Library.IsMobile then
-        local ToggleButton = Library:AddDraggableButton("Toggle", function()
+        local ToggleButton = Library:AddDraggableButton("开关界面", function()
             Library:Toggle()
         end)
 
-        Library.MobileLockButton = Library:AddDraggableButton("Lock", function(self)
+        Library.MobileLockButton = Library:AddDraggableButton("锁定", function(self)
             Library.CantDragForced = not Library.CantDragForced
-            self:SetText(Library.CantDragForced and "Unlock" or "Lock")
+            self:SetText(Library.CantDragForced and "解锁" or "锁定")
         end)
 
         Library.MobileLockButton.Button.Visible = Library.ShowMobileLockButton
