@@ -420,10 +420,10 @@ local Templates = {
         CornerRadius = 15,
         NotifySide = "Right",
         Font = Enum.Font.Gotham,
-        ToggleKeybind = Enum.KeyCode.RightControl,
+        ToggleKeybind = Enum.KeyCode.Z,
         MobileButtonsSide = "Left",
         UnlockMouseWhileOpen = true,
-        ShowMobileLockButton = true,
+        ShowMobileLockButton = false,
         ShowCustomCursor = true,
         Compact = false,
         EnableSidebarResize = true,
@@ -1388,7 +1388,7 @@ function Library:GetBetterColor(Color: Color3, Add: number): Color3
 end
 
 function Library:PlayToggleSound()
-    local id = AssetManager.GetAsset("Toggle") or AssetOverrides["https://github.com/javaKL666/Obsidian/blob/main/ToggleSoundOn.mp3"] or "https://github.com/javaKL666/Obsidian/blob/main/ToggleSoundOff.mp3"
+    local id = AssetManager.GetAsset("Toggle") or AssetOverrides["rbxassetid://6895079853"] or "rbxassetid://6895079853"
     New("Sound", {
         SoundId = id,
         Volume = 1,
@@ -1778,6 +1778,161 @@ do
     function Library:SetWatermark(Text: string)
         WatermarkLabel.Text = Text
         ResizeWatermark()
+    end
+end
+
+--// CustomCursor
+do
+    local CustomCursorState = {
+        Enabled = false,
+        Frames = nil,
+        Outlines = nil,
+        Watermark = nil,
+        Connection = nil,
+        LastPulse = tick(),
+        PulseGrowing = true,
+    }
+
+    local function destroyCustomCursor()
+        if CustomCursorState.Connection then
+            CustomCursorState.Connection:Disconnect()
+            CustomCursorState.Connection = nil
+        end
+
+        local function destroyList(list)
+            if not list then return end
+            for _, obj in ipairs(list) do
+                if obj then
+                    if obj.Remove then
+                        obj:Remove()
+                    elseif obj.Destroy then
+                        obj:Destroy()
+                    end
+                end
+            end
+        end
+
+        destroyList(CustomCursorState.Frames)
+        destroyList(CustomCursorState.Outlines)
+
+        if CustomCursorState.Watermark then
+            if CustomCursorState.Watermark.Remove then
+                CustomCursorState.Watermark:Remove()
+            elseif CustomCursorState.Watermark.Destroy then
+                CustomCursorState.Watermark:Destroy()
+            end
+            CustomCursorState.Watermark = nil
+        end
+
+        CustomCursorState.Frames = nil
+        CustomCursorState.Outlines = nil
+        CustomCursorState.Enabled = false
+    end
+
+    local function ensureCustomCursorObjects()
+        if CustomCursorState.Frames then
+            return
+        end
+
+        CustomCursorState.Frames = {}
+        CustomCursorState.Outlines = {}
+
+        for i = 1, 4 do
+            local line = Drawing.new("Line")
+            line.Visible = false
+            line.Thickness = 1
+            line.ZIndex = 10
+            line.Color = Color3.fromRGB(230, 230, 240)
+            CustomCursorState.Frames[i] = line
+
+            local outline = Drawing.new("Line")
+            outline.Visible = false
+            outline.Thickness = 3
+            outline.ZIndex = 9
+            outline.Color = Color3.fromRGB(0, 0, 0)
+            CustomCursorState.Outlines[i] = outline
+        end
+
+        local watermark = Drawing.new("Text")
+        watermark.Visible = false
+        watermark.Center = true
+        watermark.Outline = true
+        watermark.Font = 1
+        watermark.Size = 14
+        watermark.Color = Color3.fromRGB(230, 230, 240)
+        watermark.OutlineColor = Color3.fromRGB(0, 0, 0)
+        watermark.ZIndex = 10
+        watermark.Text = "CustomCursor"
+        CustomCursorState.Watermark = watermark
+    end
+
+    local function updateCustomCursor()
+        local now = tick()
+        local rotateSpeed = 80
+        local radius = 10
+        local length = 8
+        local width = 1
+        local minLen = 6
+        local maxLen = 8
+        local pulseInterval = 0.5
+
+        if now - CustomCursorState.LastPulse >= pulseInterval then
+            CustomCursorState.PulseGrowing = not CustomCursorState.PulseGrowing
+            CustomCursorState.LastPulse = now
+        end
+
+        local pulseAlpha = math.clamp((now - CustomCursorState.LastPulse) / pulseInterval, 0, 1)
+        local currentLen = CustomCursorState.PulseGrowing
+            and (minLen + (maxLen - minLen) * pulseAlpha)
+            or (maxLen - (maxLen - minLen) * pulseAlpha)
+
+        local mousePos = UserInputService:GetMouseLocation()
+        local pos = Vector2.new(mousePos.X, mousePos.Y)
+        local angleBase = (now * rotateSpeed) % 360
+
+        for i = 1, 4 do
+            local frame = CustomCursorState.Frames[i]
+            local outline = CustomCursorState.Outlines[i]
+            if frame and outline then
+                local angle = angleBase + (i - 1) * 90
+                local dir = Vector2.new(math.sin(math.rad(angle)), math.cos(math.rad(angle)))
+                local startPos = pos + dir * radius
+                local endPos = startPos + dir * currentLen
+
+                frame.From = startPos
+                frame.To = endPos
+                frame.Thickness = width
+                frame.Visible = true
+
+                outline.From = startPos
+                outline.To = endPos
+                outline.Visible = true
+            end
+        end
+
+        if CustomCursorState.Watermark then
+            CustomCursorState.Watermark.Position = pos + Vector2.new(0, radius + currentLen + 10)
+            CustomCursorState.Watermark.Visible = true
+        end
+    end
+
+    function Library:CustomCursor(enabled: boolean)
+        if enabled then
+            if CustomCursorState.Enabled then
+                return
+            end
+            ensureCustomCursorObjects()
+            CustomCursorState.Connection = RunService.RenderStepped:Connect(updateCustomCursor)
+            CustomCursorState.Enabled = true
+            Library.CustomCursorEnabled = true
+        else
+            destroyCustomCursor()
+            Library.CustomCursorEnabled = false
+        end
+    end
+
+    function Library:SetCustomCursorEnabled(state: boolean)
+        Library:CustomCursor(state)
     end
 end
 
@@ -3411,7 +3566,7 @@ do
                 if Button.DoubleClick then
                     Button.Locked = true
 
-                    Button.Base.Text = "您确定吗?"
+                    Button.Base.Text = "你确定吗"
                     Button.Base.TextColor3 = Library.Scheme.AccentColor
                     Library.Registry[Button.Base].TextColor3 = "AccentColor"
 
@@ -6010,7 +6165,11 @@ function Library:CreateWindow(WindowInfo)
     Library.Scheme.Font = WindowInfo.Font
     Library.ToggleKeybind = WindowInfo.ToggleKeybind
     Library.ShowMobileLockButton = WindowInfo.ShowMobileLockButton
-    Library.ShowCustomCursor = WindowInfo.ShowCustomCursor
+    if WindowInfo.ShowCustomCursor then
+        Library:CustomCursor(true)
+    else
+        Library:CustomCursor(false)
+    end
 
     local IsDefaultSearchbarSize = WindowInfo.SearchbarSize == UDim2.fromScale(1, 1)
     local MainFrame
@@ -7596,7 +7755,7 @@ function Library:CreateWindow(WindowInfo)
                 BorderSizePixel = 1,
                 Position = UDim2.fromScale(1, 0),
                 Size = UDim2.new(0, 63, 1, 0),
-                Text = "Execute",
+                Text = "执行",
                 TextSize = 14,
                 Parent = Holder,
             })
