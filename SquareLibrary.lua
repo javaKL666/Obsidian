@@ -1388,7 +1388,7 @@ function Library:GetBetterColor(Color: Color3, Add: number): Color3
 end
 
 function Library:PlayToggleSound()
-    local id = AssetManager.GetAsset("Toggle") or AssetOverrides["rbxassetid://6895079853"] or "rbxassetid://6895079853"
+    local id = AssetManager.GetAsset("Toggle") or AssetOverrides["https://github.com/javaKL666/Obsidian/blob/main/ToggleSoundOn.mp3"] or "https://github.com/javaKL666/Obsidian/blob/main/ToggleSoundOff.mp3"
     New("Sound", {
         SoundId = id,
         Volume = 1,
