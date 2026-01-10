@@ -48,12 +48,12 @@ do
     ThemeManager.AppliedToTab = false
     ThemeManager.BuiltInThemes = {
         ["Default"] = {
-            1,
-            { FontColor = "ffffff", MainColor = "191919", AccentColor = "7d55ff", BackgroundColor = "0f0f0f", OutlineColor = "282828" },
-        },
-        ["Black Dark"] = {
             2,
             { FontColor = "ffffff", MainColor = "191919", AccentColor = "a2a2a2", BackgroundColor = "000000", OutlineColor = "282828" },
+        },
+        ["mspaint"] = {
+            1,
+            { FontColor = "ffffff", MainColor = "191919", AccentColor = "7d55ff", BackgroundColor = "0f0f0f", OutlineColor = "282828" },
         },
         ["BBot"] = {
             3,
