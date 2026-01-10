@@ -158,7 +158,7 @@ local Library = {
 
     CantDragForced = false,
 
-    CustomCursorEnabled = true,
+    CrosshairEnabled = true,
     GroupboxesCollapsible = true,
 
     Signals = {},
@@ -424,7 +424,7 @@ local Templates = {
         MobileButtonsSide = "Left",
         UnlockMouseWhileOpen = true,
         ShowMobileLockButton = true,
-        ShowCustomCursor = false,
+        ShowCrosshair = true,
         Compact = false,
         EnableSidebarResize = true,
         SidebarMinWidth = 180,
@@ -1781,9 +1781,9 @@ do
     end
 end
 
---// CustomCursor
+--// Crosshair
 do
-    local CustomCursorState = {
+    local CrosshairState = {
         Enabled = false,
         Frames = nil,
         Outlines = nil,
@@ -1793,10 +1793,10 @@ do
         PulseGrowing = true,
     }
 
-    local function destroyCustomCursor()
-        if CustomCursorState.Connection then
-            CustomCursorState.Connection:Disconnect()
-            CustomCursorState.Connection = nil
+    local function destroyCrosshair()
+        if CrosshairState.Connection then
+            CrosshairState.Connection:Disconnect()
+            CrosshairState.Connection = nil
         end
 
         local function destroyList(list)
@@ -1812,30 +1812,30 @@ do
             end
         end
 
-        destroyList(CustomCursorState.Frames)
-        destroyList(CustomCursorState.Outlines)
+        destroyList(CrosshairState.Frames)
+        destroyList(CrosshairState.Outlines)
 
-        if CustomCursorState.Watermark then
-            if CustomCursorState.Watermark.Remove then
-                CustomCursorState.Watermark:Remove()
-            elseif CustomCursorState.Watermark.Destroy then
-                CustomCursorState.Watermark:Destroy()
+        if CrosshairState.Watermark then
+            if CrosshairState.Watermark.Remove then
+                CrosshairState.Watermark:Remove()
+            elseif CrosshairState.Watermark.Destroy then
+                CrosshairState.Watermark:Destroy()
             end
-            CustomCursorState.Watermark = nil
+            CrosshairState.Watermark = nil
         end
 
-        CustomCursorState.Frames = nil
-        CustomCursorState.Outlines = nil
-        CustomCursorState.Enabled = false
+        CrosshairState.Frames = nil
+        CrosshairState.Outlines = nil
+        CrosshairState.Enabled = false
     end
 
-    local function ensureCustomCursorObjects()
-        if CustomCursorState.Frames then
+    local function ensureCrosshairObjects()
+        if CrosshairState.Frames then
             return
         end
 
-        CustomCursorState.Frames = {}
-        CustomCursorState.Outlines = {}
+        CrosshairState.Frames = {}
+        CrosshairState.Outlines = {}
 
         for i = 1, 4 do
             local line = Drawing.new("Line")
@@ -1843,14 +1843,14 @@ do
             line.Thickness = 1
             line.ZIndex = 10
             line.Color = Color3.fromRGB(230, 230, 240)
-            CustomCursorState.Frames[i] = line
+            CrosshairState.Frames[i] = line
 
             local outline = Drawing.new("Line")
             outline.Visible = false
             outline.Thickness = 3
             outline.ZIndex = 9
             outline.Color = Color3.fromRGB(0, 0, 0)
-            CustomCursorState.Outlines[i] = outline
+            CrosshairState.Outlines[i] = outline
         end
 
         local watermark = Drawing.new("Text")
@@ -1863,10 +1863,10 @@ do
         watermark.OutlineColor = Color3.fromRGB(0, 0, 0)
         watermark.ZIndex = 10
         watermark.Text = "CustomCursor"
-        CustomCursorState.Watermark = watermark
+        CrosshairState.Watermark = watermark
     end
 
-    local function updateCustomCursor()
+    local function updateCrosshair()
         local now = tick()
         local rotateSpeed = 80
         local radius = 10
@@ -1876,13 +1876,13 @@ do
         local maxLen = 8
         local pulseInterval = 0.5
 
-        if now - CustomCursorState.LastPulse >= pulseInterval then
-            CustomCursorState.PulseGrowing = not CustomCursorState.PulseGrowing
-            CustomCursorState.LastPulse = now
+        if now - CrosshairState.LastPulse >= pulseInterval then
+            CrosshairState.PulseGrowing = not CrosshairState.PulseGrowing
+            CrosshairState.LastPulse = now
         end
 
-        local pulseAlpha = math.clamp((now - CustomCursorState.LastPulse) / pulseInterval, 0, 1)
-        local currentLen = CustomCursorState.PulseGrowing
+        local pulseAlpha = math.clamp((now - CrosshairState.LastPulse) / pulseInterval, 0, 1)
+        local currentLen = CrosshairState.PulseGrowing
             and (minLen + (maxLen - minLen) * pulseAlpha)
             or (maxLen - (maxLen - minLen) * pulseAlpha)
 
@@ -1891,8 +1891,8 @@ do
         local angleBase = (now * rotateSpeed) % 360
 
         for i = 1, 4 do
-            local frame = CustomCursorState.Frames[i]
-            local outline = CustomCursorState.Outlines[i]
+            local frame = CrosshairState.Frames[i]
+            local outline = CrosshairState.Outlines[i]
             if frame and outline then
                 local angle = angleBase + (i - 1) * 90
                 local dir = Vector2.new(math.sin(math.rad(angle)), math.cos(math.rad(angle)))
@@ -1910,29 +1910,29 @@ do
             end
         end
 
-        if CustomCursorState.Watermark then
-            CustomCursorState.Watermark.Position = pos + Vector2.new(0, radius + currentLen + 10)
-            CustomCursorState.Watermark.Visible = true
+        if CrosshairState.Watermark then
+            CrosshairState.Watermark.Position = pos + Vector2.new(0, radius + currentLen + 10)
+            CrosshairState.Watermark.Visible = true
         end
     end
 
-    function Library:CustomCursor(enabled: boolean)
+    function Library:Crosshair(enabled: boolean)
         if enabled then
-            if CustomCursorState.Enabled then
+            if CrosshairState.Enabled then
                 return
             end
-            ensureCustomCursorObjects()
-            CustomCursorState.Connection = RunService.RenderStepped:Connect(updateCustomCursor)
-            CustomCursorState.Enabled = true
-            Library.CustomCursorEnabled = true
+            ensureCrosshairObjects()
+            CrosshairState.Connection = RunService.RenderStepped:Connect(updateCrosshair)
+            CrosshairState.Enabled = true
+            Library.CrosshairEnabled = true
         else
-            destroyCustomCursor()
-            Library.CustomCursorEnabled = false
+            destroyCrosshair()
+            Library.CrosshairEnabled = false
         end
     end
 
-    function Library:SetCustomCursorEnabled(state: boolean)
-        Library:CustomCursor(state)
+    function Library:SetCrosshairEnabled(state: boolean)
+        Library:Crosshair(state)
     end
 end
 
@@ -2207,7 +2207,7 @@ function Library:Unload()
     end
 
     pcall(function()
-        Library:CustomCursor(false)
+        Library:Crosshair(false)
     end)
 
     Library.Unloaded = true
@@ -6165,10 +6165,10 @@ function Library:CreateWindow(WindowInfo)
     Library.Scheme.Font = WindowInfo.Font
     Library.ToggleKeybind = WindowInfo.ToggleKeybind
     Library.ShowMobileLockButton = WindowInfo.ShowMobileLockButton
-    if WindowInfo.ShowCustomCursor then
-        Library:CustomCursor(true)
+    if WindowInfo.ShowCrosshair then
+        Library:Crosshair(true)
     else
-        Library:CustomCursor(false)
+        Library:Crosshair(false)
     end
 
     local IsDefaultSearchbarSize = WindowInfo.SearchbarSize == UDim2.fromScale(1, 1)
