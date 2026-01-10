@@ -423,7 +423,7 @@ local Templates = {
         ToggleKeybind = Enum.KeyCode.Z,
         MobileButtonsSide = "Left",
         UnlockMouseWhileOpen = true,
-        ShowMobileLockButton = false,
+        ShowMobileLockButton = true,
         ShowCustomCursor = true,
         Compact = false,
         EnableSidebarResize = true,
@@ -3411,7 +3411,7 @@ do
                 if Button.DoubleClick then
                     Button.Locked = true
 
-                    Button.Base.Text = "Are you sure?"
+                    Button.Base.Text = "你确定?"
                     Button.Base.TextColor3 = Library.Scheme.AccentColor
                     Library.Registry[Button.Base].TextColor3 = "AccentColor"
 
