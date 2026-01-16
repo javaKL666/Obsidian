@@ -3083,7 +3083,7 @@ do
 				if Button.DoubleClick then
 					Button.Locked = true
 
-					Button.Base.Text = "您确定吗？"
+					Button.Base.Text = "你确定吗？"
 					Button.Base.TextColor3 = Library.Scheme.AccentColor
 					Library.Registry[Button.Base].TextColor3 = "AccentColor"
 
@@ -4180,7 +4180,7 @@ do
 		if Info.Searchable then
 			SearchBox = New("TextBox", {
 				BackgroundTransparency = 1,
-				PlaceholderText = "搜索",
+				PlaceholderText = "搜索...",
 				Position = UDim2.fromOffset(-8, 0),
 				Size = UDim2.new(1, -12, 1, 0),
 				TextSize = 14,
@@ -6939,7 +6939,7 @@ function Library:CreateWindow(WindowInfo)
 				BackgroundColor3 = "MainColor",
 				BorderColor3 = "OutlineColor",
 				BorderSizePixel = 1,
-				PlaceholderText = "Key",
+				PlaceholderText = "密钥",
 				Size = UDim2.new(1, -71, 1, 0),
 				TextSize = 14,
 				TextXAlignment = Enum.TextXAlignment.Left,
@@ -6958,7 +6958,7 @@ function Library:CreateWindow(WindowInfo)
 				BorderSizePixel = 1,
 				Position = UDim2.fromScale(1, 0),
 				Size = UDim2.new(0, 63, 1, 0),
-				Text = "Execute",
+				Text = "执行",
 				TextSize = 14,
 				Parent = Holder,
 			})
