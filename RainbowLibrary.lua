@@ -3327,7 +3327,7 @@ do
                 if Button.DoubleClick then
                     Button.Locked = true
 
-                    Button.Base.Text = "Are you sure?"
+                    Button.Base.Text = "你确定吗？"
                     Button.Base.TextColor3 = Library.Scheme.AccentColor
                     Library.Registry[Button.Base].TextColor3 = "AccentColor"
 
@@ -4435,7 +4435,7 @@ do
         if Info.Searchable then
             SearchBox = New("TextBox", {
                 BackgroundTransparency = 1,
-                PlaceholderText = "Search...",
+                PlaceholderText = "搜索...",
                 Position = UDim2.fromOffset(-8, 0),
                 Size = UDim2.new(1, -12, 1, 0),
                 TextSize = 14,
@@ -6309,7 +6309,7 @@ function Library:CreateWindow(WindowInfo)
 
         SearchBox = New("TextBox", {
             BackgroundColor3 = "MainColor",
-            PlaceholderText = "Search",
+            PlaceholderText = "搜索",
             Size = WindowInfo.SearchbarSize,
             TextScaled = true,
             Visible = not (WindowInfo.DisableSearch or false),
@@ -6533,7 +6533,7 @@ local PlayerInfoFrame = New("Frame", {
             BackgroundTransparency = 1,
             Size = UDim2.new(0, 80, 0, 12),
             Position = UDim2.fromOffset(50, 14),
-            Text = "NOL-User",
+            Text = "User用户",
             TextSize = 10,
             TextColor3 = Color3.fromRGB(200, 200, 200),
             TextXAlignment = Enum.TextXAlignment.Left,
@@ -7578,7 +7578,7 @@ local PlayerInfoFrame = New("Frame", {
                 BackgroundColor3 = "MainColor",
                 BorderColor3 = "OutlineColor",
                 BorderSizePixel = 1,
-                PlaceholderText = "Key",
+                PlaceholderText = "密钥",
                 Size = UDim2.new(1, -71, 1, 0),
                 TextSize = 14,
                 TextXAlignment = Enum.TextXAlignment.Left,
@@ -7597,7 +7597,7 @@ local PlayerInfoFrame = New("Frame", {
                 BorderSizePixel = 1,
                 Position = UDim2.fromScale(1, 0),
                 Size = UDim2.new(0, 63, 1, 0),
-                Text = "Execute",
+                Text = "执行",
                 TextSize = 14,
                 Parent = Holder,
             })
@@ -7761,13 +7761,13 @@ local PlayerInfoFrame = New("Frame", {
     end
 
     if Library.IsMobile then
-        local ToggleButton = Library:AddDraggableButton("Toggle", function()
+        local ToggleButton = Library:AddDraggableButton("开关界面", function()
             Library:Toggle()
         end)
 
-        local LockButton = Library:AddDraggableButton("Lock", function(self)
+        local LockButton = Library:AddDraggableButton("锁定", function(self)
             Library.CantDragForced = not Library.CantDragForced
-            self:SetText(Library.CantDragForced and "Unlock" or "Lock")
+            self:SetText(Library.CantDragForced and "解锁" or "锁定")
         end)
 
         if WindowInfo.MobileButtonsSide == "Right" then
