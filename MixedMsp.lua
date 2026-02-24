@@ -7903,7 +7903,7 @@ function Library:CreateWindow(WindowInfo)
     end
 
     if Library.IsMobile then
-        local ToggleButton = Library:AddDraggableButton("开关菜单", function()
+        local ToggleButton = Library:AddDraggableButton("开关界面", function()
             Library:Toggle()
         end)
 
