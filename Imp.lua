@@ -7144,7 +7144,7 @@ do
         if Info.Searchable then
             SearchBox = New("TextBox", {
                 BackgroundTransparency = 1,
-                PlaceholderText = "Search...",
+                PlaceholderText = "搜索...",
                 Position = UDim2.fromOffset(-8, 0),
                 Size = UDim2.new(1, -12, 1, 0),
                 TextSize = 14,
@@ -9545,7 +9545,7 @@ function Library:CreateWindow(WindowInfo)
 
         SearchBox = New("TextBox", {
             BackgroundColor3 = "MainColor",
-            PlaceholderText = "Search",
+            PlaceholderText = "搜索",
             Size = WindowInfo.SearchbarSize,
             TextScaled = true,
             Visible = not (WindowInfo.DisableSearch or false),
@@ -9772,7 +9772,7 @@ function Library:CreateWindow(WindowInfo)
             BackgroundTransparency = 1,
             Size = UDim2.new(0, 80, 0, 12),
             Position = UDim2.fromOffset(50, 14),
-            Text = "User",
+            Text = "User用户",
             TextSize = 10,
             TextColor3 = Color3.fromRGB(200, 200, 200),
             TextXAlignment = Enum.TextXAlignment.Left,
@@ -10983,7 +10983,7 @@ function Library:CreateWindow(WindowInfo)
                 BackgroundColor3 = "MainColor",
                 BorderColor3 = "OutlineColor",
                 BorderSizePixel = 1,
-                PlaceholderText = "Key",
+                PlaceholderText = "密钥",
                 Size = UDim2.new(1, -71, 1, 0),
                 TextSize = 14,
                 TextXAlignment = Enum.TextXAlignment.Left,
@@ -11002,7 +11002,7 @@ function Library:CreateWindow(WindowInfo)
                 BorderSizePixel = 1,
                 Position = UDim2.fromScale(1, 0),
                 Size = UDim2.new(0, 63, 1, 0),
-                Text = "Execute",
+                Text = "执行",
                 TextSize = 14,
                 Parent = Holder,
             })
