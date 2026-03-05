@@ -11444,6 +11444,17 @@ function Library:CreateWindow(WindowInfo)
     return Window
 end
 
+local BackgroundContainer = New("Frame", {
+        BackgroundTransparency = 0.3,
+        BackgroundColor3 = Library.Scheme.BackgroundColor,
+        Size = UDim2.fromScale(1, 1),
+        Position = UDim2.fromScale(0, 0),
+        Parent = MainFrame,
+        ZIndex = 0,
+    })
+    
+    local SnowEffect = Library:AddSnowEffect(BackgroundContainer, 40, 10, 0.7)
+
 local function OnPlayerChange()
     if Library.Unloaded then
         return
