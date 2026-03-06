@@ -11444,7 +11444,7 @@ function Library:CreateWindow(WindowInfo)
     return Window
 end
 
-local BackgroundContainer = New("Frame", {
+    local BackgroundContainer = New("Frame", {
         BackgroundTransparency = 0.3,
         BackgroundColor3 = Library.Scheme.BackgroundColor,
         Size = UDim2.fromScale(1, 1),
@@ -11454,6 +11454,22 @@ local BackgroundContainer = New("Frame", {
     })
     
     local SnowEffect = Library:AddSnowEffect(BackgroundContainer, 40, 10, 0.7)
+    
+    Window.SetSnowVisible = function(visible)
+        if SnowEffect then
+            SnowEffect.SetVisible(visible)
+        end
+    end
+    
+    Window.RemoveSnowEffect = function()
+        if SnowEffect then
+            SnowEffect.Destroy()
+            SnowEffect = nil
+        end
+    end
+        
+    return Window
+end
 
 local function OnPlayerChange()
     if Library.Unloaded then
