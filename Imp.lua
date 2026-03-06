@@ -6996,15 +6996,17 @@ do
             end
         end))
 
-        Library:GiveSignal(UserInputService.InputEnded:Connect(function(Input: InputObject)
-            if IsMouseInput(Input) then
-                IsDraggingSlider = false
+       Library:GiveSignal(UserInputService.InputEnded:Connect(function(Input: InputObject)
+    if IsMouseInput(Input) then
+        IsDraggingSlider = false
 
-                for _, Side in pairs(Library.ActiveTab.Sides) do
-                    Side.ScrollingEnabled = true
-                end
-            end
-        end))
+        if Library.ActiveTab and Library.ActiveTab.Sides then
+            for _, Side in pairs(Library.ActiveTab.Sides) do
+                Side.ScrollingEnabled = true
+             end
+           end
+         end
+      end))
 
         if typeof(Slider.Tooltip) == "string" or typeof(Slider.DisabledTooltip) == "string" then
             Slider.TooltipTable = Library:AddTooltip(Slider.Tooltip, Slider.DisabledTooltip, Bar)
