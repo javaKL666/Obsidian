@@ -11441,9 +11441,6 @@ function Library:CreateWindow(WindowInfo)
         Library.IsRobloxFocused = false
     end))
 
-    return Window
-end
-
     local BackgroundContainer = New("Frame", {
         BackgroundTransparency = 0.3,
         BackgroundColor3 = Library.Scheme.BackgroundColor,
