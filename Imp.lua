@@ -5199,8 +5199,8 @@ do
                     return
                 end
 
-                if Library.SoundPlayBackToggle and Library.SoundPlayBackToggle.Value then
-                PlayToggleSound()
+                if Library.SoundPlayBackToggle then
+                  PlayToggleSound()
                 end
                 
                 local ClickPos = Vector2.new(Mouse.X, Mouse.Y)
