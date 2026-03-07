@@ -5927,7 +5927,10 @@ do
                 return
             end
             
-            PlayToggleSound()
+            if Library.SoundPlayBackToggle then
+                  PlayToggleSound()
+                end
+            
             Toggle:SetValue(not Toggle.Value)
         end)
 
@@ -7570,7 +7573,10 @@ do
                 return
             end
 
-            PlayToggleSound()
+            if Library.SoundPlayBackToggle then
+                  PlayToggleSound()
+                end
+
             MenuTable:Toggle()
         end)
 
