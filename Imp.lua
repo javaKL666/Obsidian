@@ -229,7 +229,7 @@ local Library = {
 }
 
 function PlayToggleSound()
-    local soundId = CustomImageManager.GetAsset("Toggle") or "rbxassetid://" .. GlobalSoundConfig.Toggle
+    local soundId = "rbxassetid://" .. GlobalSoundConfig.Toggle
     local sound = Instance.new("Sound")
     sound.SoundId = soundId
     sound.Volume = 1
@@ -240,7 +240,7 @@ function PlayToggleSound()
 end
 
 function PlayNormalSound()
-    local soundId = CustomImageManager.GetAsset("Normal") or "rbxassetid://" .. GlobalSoundConfig.Normal
+    local soundId = "rbxassetid://" .. GlobalSoundConfig.Normal
     local sound = Instance.new("Sound")
     sound.SoundId = soundId
     sound.Volume = 1
@@ -250,7 +250,7 @@ function PlayNormalSound()
 end
 
 function PlayErrorSound()
-    local soundId = CustomImageManager.GetAsset("Error") or "rbxassetid://" .. GlobalSoundConfig.Error
+    local soundId = "rbxassetid://" .. GlobalSoundConfig.Error
     local sound = Instance.new("Sound")
     sound.SoundId = soundId
     sound.Volume = 1
@@ -260,7 +260,7 @@ function PlayErrorSound()
 end
 
 function PlayNotifySound(soundId)
-    local finalId = soundId or "rbxassetid://" .. GlobalSoundConfig.DefaultNotify
+    local finalId = "rbxassetid://" .. GlobalSoundConfig.DefaultNotify
     if typeof(finalId) == "number" then finalId = "rbxassetid://" .. finalId end
     local sound = Instance.new("Sound")
     sound.SoundId = finalId
@@ -5193,13 +5193,16 @@ do
                 Button.Tween = TweenService:Create(Button.Base, Library.HoverTweenInfo, tweenProps)
                 Button.Tween:Play()
             end)
-
+            
             Button.Base.MouseButton1Click:Connect(function()
                 if Button.Disabled or Button.Locked then
                     return
                 end
 
+                if Library.SoundPlayBackToggle and Library.SoundPlayBackToggle.Value then
                 PlayToggleSound()
+                end
+                
                 local ClickPos = Vector2.new(Mouse.X, Mouse.Y)
                 Library:CreateRippleEffect(Button.Base, ClickPos)
 
@@ -5624,7 +5627,8 @@ do
             if Toggle.Disabled then
                 return
             end
-
+            
+            PlayToggleSound()
             Toggle:SetValue(not Toggle.Value)
         end)
 
@@ -5922,7 +5926,8 @@ do
             if Toggle.Disabled then
                 return
             end
-
+            
+            PlayToggleSound()
             Toggle:SetValue(not Toggle.Value)
         end)
 
@@ -7565,6 +7570,7 @@ do
                 return
             end
 
+            PlayToggleSound()
             MenuTable:Toggle()
         end)
 
