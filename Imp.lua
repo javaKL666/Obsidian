@@ -32,10 +32,10 @@ local Tooltips = {}
 local NeonAccentColor = Color3.fromHex("#813dd4")
 
 local GlobalSoundConfig = {
-    Toggle = "rbxassetid://6895079853", 
-    Normal = "rbxassetid://18886652611", 
-    Error = "rbxassetid://87519554692663", 
-    DefaultNotify = "rbxassetid://124357890" 
+    Toggle = "6895079853", 
+    Normal = "18886652611", 
+    Error = "87519554692663", 
+    DefaultNotify = "124357890" 
 }
 
 local BaseURL = "https://raw.githubusercontent.com/deividcomsono/Obsidian/refs/heads/main/"
