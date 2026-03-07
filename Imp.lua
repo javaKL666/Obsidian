@@ -142,6 +142,7 @@ do
 
         return success, errorMessage
     end
+end
 
 for AssetName, _ in CustomImageManagerAssets do
     CustomImageManager.DownloadAsset(AssetName)
