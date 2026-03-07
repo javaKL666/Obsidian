@@ -31,6 +31,13 @@ local Tooltips = {}
 
 local NeonAccentColor = Color3.fromHex("#813dd4")
 
+local GlobalSoundConfig = {
+    Toggle = "rbxassetid://6895079853", 
+    Normal = "rbxassetid://18886652611", 
+    Error = "rbxassetid://87519554692663", 
+    DefaultNotify = "rbxassetid://124357890" 
+}
+
 local BaseURL = "https://raw.githubusercontent.com/deividcomsono/Obsidian/refs/heads/main/"
 local CustomImageManager = {}
 local CustomImageManagerAssets = {
@@ -136,22 +143,9 @@ do
         return success, errorMessage
     end
 
--- 原有 CustomImageManager 循环
 for AssetName, _ in CustomImageManagerAssets do
     CustomImageManager.DownloadAsset(AssetName)
 end
-
-local SoundAssets = {
-    Toggle = { RobloxId = 6895079853, Path = "Obsidian/sounds/Toggle.ogg", URL = BaseURL .. "sounds/Toggle.ogg" },
-    Normal = { RobloxId = 18886652611, Path = "Obsidian/sounds/Normal.ogg", URL = BaseURL .. "sounds/Normal.ogg" },
-    Error = { RobloxId = 87519554692663, Path = "Obsidian/sounds/Error.ogg", URL = BaseURL .. "sounds/Error.ogg" },
-}
-for name, data in pairs(SoundAssets) do
-    if not CustomImageManagerAssets[name] then
-        CustomImageManager.AddAsset(name, data.RobloxId, data.URL)
-    end
-end
-end 
 
 local Library = {
     LocalPlayer = LocalPlayer,
@@ -233,29 +227,46 @@ local Library = {
     ImageManager = CustomImageManager,
 }
 
-local function GetSoundId(assetName)
-    return CustomImageManager.GetAsset(assetName) or "rbxassetid://" .. SoundAssets[assetName].RobloxId
-end
-
 function PlayToggleSound()
-    local id = GetSoundId("Toggle")
-    Instance.new("Sound", SoundService) { SoundId = id, Volume = 1, PlayOnRemove = true }:Destroy()
+    local soundId = CustomImageManager.GetAsset("Toggle") or "rbxassetid://" .. GlobalSoundConfig.Toggle
+    local sound = Instance.new("Sound")
+    sound.SoundId = soundId
+    sound.Volume = 1
+    sound.Parent = SoundService
+    sound:Play()
+    sound.Destroying:Connect(function() sound:Stop() end)
+    task.delay(2, function() sound:Destroy() end) 
 end
 
 function PlayNormalSound()
-    local id = GetSoundId("Normal")
-    Instance.new("Sound", SoundService) { SoundId = id, Volume = 1, PlayOnRemove = true }:Destroy()
+    local soundId = CustomImageManager.GetAsset("Normal") or "rbxassetid://" .. GlobalSoundConfig.Normal
+    local sound = Instance.new("Sound")
+    sound.SoundId = soundId
+    sound.Volume = 1
+    sound.Parent = SoundService
+    sound:Play()
+    task.delay(2, function() sound:Destroy() end)
 end
 
 function PlayErrorSound()
-    local id = GetSoundId("Error")
-    Instance.new("Sound", SoundService) { SoundId = id, Volume = 1, PlayOnRemove = true }:Destroy()
+    local soundId = CustomImageManager.GetAsset("Error") or "rbxassetid://" .. GlobalSoundConfig.Error
+    local sound = Instance.new("Sound")
+    sound.SoundId = soundId
+    sound.Volume = 1
+    sound.Parent = SoundService
+    sound:Play()
+    task.delay(2, function() sound:Destroy() end)
 end
 
 function PlayNotifySound(soundId)
-    if not soundId then return end
-    local finalId = typeof(soundId) == "number" and "rbxassetid://" .. soundId or soundId
-    Instance.new("Sound", SoundService) { SoundId = finalId, Volume = 1, PlayOnRemove = true }:Destroy()
+    local finalId = soundId or "rbxassetid://" .. GlobalSoundConfig.DefaultNotify
+    if typeof(finalId) == "number" then finalId = "rbxassetid://" .. finalId end
+    local sound = Instance.new("Sound")
+    sound.SoundId = finalId
+    sound.Volume = 1
+    sound.Parent = SoundService
+    sound:Play()
+    task.delay(2, function() sound:Destroy() end)
 end
 
 if RunService:IsStudio() then
