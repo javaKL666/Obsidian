@@ -136,10 +136,22 @@ do
         return success, errorMessage
     end
 
-    for AssetName, _ in CustomImageManagerAssets do
-        CustomImageManager.DownloadAsset(AssetName)
+-- 原有 CustomImageManager 循环
+for AssetName, _ in CustomImageManagerAssets do
+    CustomImageManager.DownloadAsset(AssetName)
+end
+
+local SoundAssets = {
+    Toggle = { RobloxId = 6895079853, Path = "Obsidian/sounds/Toggle.ogg", URL = BaseURL .. "sounds/Toggle.ogg" },
+    Normal = { RobloxId = 18886652611, Path = "Obsidian/sounds/Normal.ogg", URL = BaseURL .. "sounds/Normal.ogg" },
+    Error = { RobloxId = 87519554692663, Path = "Obsidian/sounds/Error.ogg", URL = BaseURL .. "sounds/Error.ogg" },
+}
+for name, data in pairs(SoundAssets) do
+    if not CustomImageManagerAssets[name] then
+        CustomImageManager.AddAsset(name, data.RobloxId, data.URL)
     end
 end
+end 
 
 local Library = {
     LocalPlayer = LocalPlayer,
@@ -220,6 +232,31 @@ local Library = {
     
     ImageManager = CustomImageManager,
 }
+
+local function GetSoundId(assetName)
+    return CustomImageManager.GetAsset(assetName) or "rbxassetid://" .. SoundAssets[assetName].RobloxId
+end
+
+function PlayToggleSound()
+    local id = GetSoundId("Toggle")
+    Instance.new("Sound", SoundService) { SoundId = id, Volume = 1, PlayOnRemove = true }:Destroy()
+end
+
+function PlayNormalSound()
+    local id = GetSoundId("Normal")
+    Instance.new("Sound", SoundService) { SoundId = id, Volume = 1, PlayOnRemove = true }:Destroy()
+end
+
+function PlayErrorSound()
+    local id = GetSoundId("Error")
+    Instance.new("Sound", SoundService) { SoundId = id, Volume = 1, PlayOnRemove = true }:Destroy()
+end
+
+function PlayNotifySound(soundId)
+    if not soundId then return end
+    local finalId = typeof(soundId) == "number" and "rbxassetid://" .. soundId or soundId
+    Instance.new("Sound", SoundService) { SoundId = finalId, Volume = 1, PlayOnRemove = true }:Destroy()
+end
 
 if RunService:IsStudio() then
     if UserInputService.TouchEnabled and not UserInputService.MouseEnabled then
@@ -5150,7 +5187,7 @@ do
                     return
                 end
 
-                -- Create ripple effect on click
+                PlayToggleSound()
                 local ClickPos = Vector2.new(Mouse.X, Mouse.Y)
                 Library:CreateRippleEffect(Button.Base, ClickPos)
 
